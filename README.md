@@ -1,2 +1,2 @@
 # Italian_to_English
-Language translation from Italian to English
+## Text translation from Italian to English (work in progress)
