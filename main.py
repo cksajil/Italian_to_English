@@ -11,7 +11,9 @@ def main():
     if args.it:
         print(args.it)
     else:
-        print("Please provide a valid text in Italian language to translate")
+        print(
+            "Please provide a valid text in Italian language to translate as argument"
+        )
         return
 
 
