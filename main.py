@@ -9,7 +9,7 @@ def main():
     args = parser.parse_args()
 
     if args.it:
-        pass
+        print(args.it)
     else:
         print("Please provide a valid text in Italian language to translate")
         return
