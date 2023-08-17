@@ -29,5 +29,5 @@ python -m pip install -r requirements.txt
 ### How to run
 
 ```console
-python main.py
+python main.py --it "Ciao programmatore"
 ```
