@@ -1,9 +1,12 @@
 import argparse
 from src.general import create_models_folder
+from src.general import download_model
 
 
 def main():
     create_models_folder()
+    download_model()
+
     parser = argparse.ArgumentParser(
         description="Translated text in Italian to English"
     )

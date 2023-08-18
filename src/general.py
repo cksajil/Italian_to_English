@@ -15,7 +15,7 @@ def load_config(config_name):
     return config
 
 
-config = load_config("my_config.yaml")
+config = load_config("config.yaml")
 
 
 def create_models_folder():
