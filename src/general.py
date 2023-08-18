@@ -13,7 +13,7 @@ def load_config(config_name):
     return config
 
 
-def create_folder(directory):
+def create_models_folder():
     """Function to create a folder in a location if it does not exist"""
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    if not os.path.exists("models"):
+        os.makedirs("models")
