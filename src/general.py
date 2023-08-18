@@ -29,12 +29,12 @@ def download_model():
     Download pretrained model if not already downloaded
     """
     if not os.path.exists(os.path.join(config["model_loc"], config["model_name"])):
-        print("Downloading pretrained UNET model if not exists")
+        print("Downloading pretrained Attention dot model if not exists")
         doi = config["model_doi"]
         response = requests.get(f"https://zenodo.org/api/records/{doi}")
         data = response.json()
         files = data["files"]
-        model_files = [file for file in files if file["key"].endswith(".h5")]
+        model_files = [file for file in files if file["key"].endswith(".hdf5")]
 
         if len(model_files) == 0:
             print("No model files found.")
