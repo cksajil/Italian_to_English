@@ -1,6 +1,6 @@
 import argparse
-from src.general import create_models_folder
-from src.general import download_model
+from src import create_models_folder
+from src import download_model, predict
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
     args = parser.parse_args()
 
     if args.it:
-        print(args.it)
+        predict(args.it)
     else:
         print(
             "Please provide a valid text in Italian language to translate as argument"
