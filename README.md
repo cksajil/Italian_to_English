@@ -1,5 +1,5 @@
-# Italian_to_English
-## Text translation from Italian to English (work in progress)
+# Italian_to_English (work in progress)
+## Text translation from Italian to English 
 
 
 **Python Version**
