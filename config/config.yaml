@@ -1,3 +1,7 @@
 model_loc: models
 model_name: attention_dot_model.hdf5
 model_doi: 8260244
+it_toknizr_model_name: 
+it_toknizr_model_doi:
+en_toknizr_model_name: 
+en_toknizr_model_doi:
