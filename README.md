@@ -1,6 +1,7 @@
 # Italian_to_English (work in progress)
 ## Text translation from Italian to English 
 
+<img src="https://i.ibb.co/pzBzP2M/attention-concat.png">
 
 **Python Version**
 ```
