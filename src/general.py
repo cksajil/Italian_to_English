@@ -34,7 +34,7 @@ def download_model():
         response = requests.get(f"https://zenodo.org/api/records/{doi}")
         data = response.json()
         files = data["files"]
-        model_files = [file for file in files if file["key"].endswith(".hdf5")]
+        model_files = [file for file in files if file["key"].endswith(".h5")]
 
         if len(model_files) == 0:
             print("No model files found.")
