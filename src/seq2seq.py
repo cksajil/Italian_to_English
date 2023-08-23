@@ -18,6 +18,9 @@ def load_pretrained_model():
 
 
 def load_tokenizer(language="italian"):
+    """
+    Function to load Italian and English text embedding tokenizers
+    """
     if language == "italian":
         file_path = join(config["model_loc"], config["it_toknizr_model_name"])
     elif language == "english":
