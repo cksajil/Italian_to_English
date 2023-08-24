@@ -31,6 +31,9 @@ def load_tokenizer(language="italian"):
 
 
 def predict(text_input):
+    """
+    Function to do model prediction from Italian to English
+    """
     model = load_pretrained_model()
     ita_tokenizer = load_tokenizer()
     eng_tokenizer = load_tokenizer(language="english")
