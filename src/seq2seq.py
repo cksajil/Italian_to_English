@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 from os.path import join
 from src import load_config
-from keras.models import load_model
+from keras.models import Sequential
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
@@ -13,7 +13,8 @@ def load_pretrained_model():
     """
     Function to load pretrained attention model and return it
     """
-    model = load_model(join(config["model_loc"], config["model_name"]))
+    model = Sequential()
+    model.load_weights(join(config["model_loc"], config["model_name"]))
     return model
 
 
