@@ -1,6 +1,11 @@
 model_loc: models
-model_name: attention_dot_model.h5
+model_name: attention_dot_0.3457.h5
 model_architecture: attention_dot_architecture.json
-model_doi: 8273608
+model_doi: 8286718
 it_toknizr_model_name: eng_tokenizer.pickle
 en_toknizr_model_name: ita_tokenizer.pickle
+
+
+
+
+

@@ -34,7 +34,7 @@ def download_model():
         response = requests.get(f"https://zenodo.org/api/records/{doi}")
         data = response.json()
         files = data["files"]
-        formats = (".hdf5", ".pickle")
+        formats = (".h5", ".pickle", ".json")
         model_files = [file for file in files if file["key"].endswith(formats)]
 
         if len(model_files) == 0:
