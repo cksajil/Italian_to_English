@@ -53,27 +53,49 @@ def predict(text_input):
 
     tok_seq = ita_tokenizer.texts_to_sequences([text_input])
     padded_in = pad_sequences(tok_seq, maxlen=20, dtype="int32", padding="post")
+    tokenized_intext = tf.convert_to_tensor(padded_in)
 
-    init_state = model.layers[0].initialize_states(1)
-    encoder_output, encoder_h, encoder_c = model.layers[0](padded_in, init_state)
+    h = tf.zeros([1, 256])
+    c = tf.zeros([1, 256])
+    initial_state = [h, c]
 
-    tar_word = np.zeros((1, 1))
-    tar_word[0, 0] = 1
+    encoder_output, encoder_h, encoder_c = model.layers[0](
+        tokenized_intext, initial_state
+    )
 
-    encoder_state_values = [encoder_h, encoder_c]
-    stop_condition = False
-    txt_sent = ""
-    k = 0
+    start_token = eng_tokenizer.word_index["<start>"]
+    end_token = eng_tokenizer.word_index["<end>"]
+    init_states = [encoder_h, encoder_c]
+    decoder_hidden_state = encoder_h
+    decoder_cell_state = encoder_c
 
-    while not stop_condition:
-        out, state_dec_h, state_dec_c = model.layers[1](tar_word, encoder_state_values)
-        encoder_state_values = [state_dec_h, state_dec_c]
-        out = model.layers[2](out)
-        out = np.argmax(out, -1)
-        k += 1
-        if k > 20 or out == eng_tokenizer.word_index["<end>"]:
-            stop_condition = True
-        else:
-            txt_sent = txt_sent + " " + eng_tokenizer.index_word[int(out)]
-        tar_word = out.reshape(1, 1)
-    return txt_sent
+    curr_vec = np.array([start_token])
+    curr_vec = np.reshape(curr_vec, (1, 1))
+
+    DECODER_SEQ_LENGTH = 20
+    prediction_string = []
+    attention_plot = np.zeros((20, 20))
+
+    for index in range(DECODER_SEQ_LENGTH):
+        (
+            output,
+            decoder_hidden_state,
+            decoder_cell_state,
+            attention_weights,
+            contex_vector,
+        ) = model.layers[1].oneStepDecoder(
+            curr_vec, encoder_output, decoder_hidden_state, decoder_cell_state
+        )
+
+        attention_weights = tf.reshape(attention_weights, (-1,))
+        attention_plot[index] = attention_weights.numpy()
+
+        pred_dec_indx = np.argmax(output)
+        prediction_string.append(eng_tokenizer.index_word[pred_dec_indx])
+
+        if pred_dec_indx == end_token:
+            break
+        curr_vec = np.array([pred_dec_indx])
+        curr_vec = np.reshape(curr_vec, (1, 1))
+
+    return " ".join(prediction_string), attention_plot
