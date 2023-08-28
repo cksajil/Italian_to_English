@@ -28,13 +28,13 @@ def download_model():
     """
     Download pretrained models if not already downloaded
     """
-    if not os.path.exists(os.path.join(config["model_loc"], config["model_name"])):
-        print("Downloading pretrained Attention dot model if not exists")
+    if not os.path.exists(os.path.join(config["model_loc"], config["model_zip_name"])):
+        print("Downloading pretrained models if not exists")
         doi = config["model_doi"]
         response = requests.get(f"https://zenodo.org/api/records/{doi}")
         data = response.json()
         files = data["files"]
-        formats = (".h5", ".pickle", ".json")
+        formats = ".zip"
         model_files = [file for file in files if file["key"].endswith(formats)]
 
         if len(model_files) == 0:
