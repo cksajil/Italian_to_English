@@ -20,8 +20,8 @@ config = load_config("config.yaml")
 
 def create_models_folder():
     """Function to create a folder in a location if it does not exist"""
-    if not os.path.exists("models"):
-        os.makedirs("models")
+    if not os.path.exists(config["model_loc"]):
+        os.makedirs(config["model_loc"])
 
 
 def download_model():

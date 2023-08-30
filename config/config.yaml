@@ -1,5 +1,5 @@
 model_zip_name: pretrained_models.zip
-model_loc: models
+model_loc: pretrained_models
 model_name: attention_dot_full
 model_doi: 8287945
 it_toknizr_model_name: eng_tokenizer.pickle
