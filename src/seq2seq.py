@@ -5,7 +5,6 @@ from os.path import join
 from utils import load_pretrained_model
 from src import load_config
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from src import encoder_decoder
 
 
 config = load_config("config.yaml")
@@ -80,33 +79,3 @@ def predict(text_input):
         curr_vec = np.reshape(curr_vec, (1, 1))
 
     return " ".join(prediction_string), attention_plot
-
-
-input_len = 20
-output_len = 20
-enc_units = 256
-att_units = 256
-dec_units = 256
-embedding_size = 100
-vocab_size_eng = 13416
-vocab_size_ita = 27029
-BATCH_SIZE = 512
-
-tf.keras.backend.clear_session()
-
-score_function = "dot"
-
-model_2_dot = encoder_decoder(
-    encoder_inputs_length=input_len,
-    decoder_inputs_length=output_len,
-    output_vocab_size=vocab_size_eng,
-    encoding_lang_vocab_size=vocab_size_ita + 1,
-    decoding_lang_vocab_size=vocab_size_eng + 1,
-    enc_embedding_size=embedding_size,
-    dec_embedding_size=embedding_size,
-    encoder_lstm_unit=enc_units,
-    decoder_lstm_unit=dec_units,
-    batch_size=BATCH_SIZE,
-    score_fun=score_function,
-    attn_units=att_units,
-)
