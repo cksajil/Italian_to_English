@@ -31,18 +31,32 @@ def create_models_folder():
         os.makedirs(config["model_loc"])
 
 
+def check_files():
+    essentials = [
+        "model_weights_file_name",
+        "it_toknizr_model_name",
+        "en_toknizr_model_name",
+    ]
+    for efile in essentials:
+        flag = os.path.exists(os.path.join(config["model_loc"], config[efile]))
+    return flag
+
+
 def download_model():
     """
     Download pretrained models if not already downloaded
     """
-    if not os.path.exists(os.path.join(config["model_loc"], config["model_zip_name"])):
+    flag = check_files
+
+    if not flag:
         print("Downloading pretrained models if not exists")
         doi = config["model_doi"]
         response = requests.get(f"https://zenodo.org/api/records/{doi}")
         data = response.json()
         files = data["files"]
-        formats = (".hdf5", ".pickle")
+        formats = (".h5", ".pickle")
         model_files = [file for file in files if file["key"].endswith(formats)]
+        print(model_files)
 
         if len(model_files) == 0:
             print("No model files found.")
@@ -98,7 +112,7 @@ def create_model():
         score_fun=score_function,
         attn_units=att_units,
     )
-
+    # model_2_dot.build(input_shape=(512, 100, 10))
     return model_2_dot
 
 
@@ -107,6 +121,6 @@ def load_pretrained_model():
     Function to load pretrained attention model and return it
     """
     model = create_model()
-    filepath = join(config["model_loc"], config["model_weights_file_name"])
-    model.load_weights(filepath, skip_mismatch=False, by_name=False, options=None)
+    # filepath = join(config["model_loc"], config["model_weights_file_name"])
+    # model.load_weights(filepath)
     return model

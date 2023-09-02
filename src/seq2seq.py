@@ -27,11 +27,12 @@ def predict(text_input):
     """
     Function to do model prediction from Italian to English
     """
+
     model = load_pretrained_model()
     ita_tokenizer = load_tokenizer()
     eng_tokenizer = load_tokenizer(language="english")
 
-    tok_seq = ita_tokenizer.texts_to_sequences([text_input])
+    tok_seq = ita_tokenizer.texts_to_sequences([text_input.lower()])
     padded_in = pad_sequences(tok_seq, maxlen=20, dtype="int32", padding="post")
     tokenized_intext = tf.convert_to_tensor(padded_in)
 
