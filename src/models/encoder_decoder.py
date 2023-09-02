@@ -1,6 +1,6 @@
 from tensorflow.keras import Model
-from encoder import Encoder
-from decoder import Decoder
+from .encoder import Encoder
+from .decoder import Decoder
 
 
 class encoder_decoder(Model):

@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.layers import LSTM
 from tensorflow.keras.layers import Embedding
-from attention import Attention
+from .attention import Attention
 from tensorflow.keras.layers import Dense
 
 

@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import Model
-from one_step_decoder import OneStepDecoder
+from .one_step_decoder import OneStepDecoder
 
 
 class Decoder(Model):

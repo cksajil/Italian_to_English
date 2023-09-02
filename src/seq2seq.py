@@ -2,8 +2,8 @@ import pickle
 import numpy as np
 import tensorflow as tf
 from os.path import join
-from utils import load_pretrained_model
-from src import load_config
+from src import load_pretrained_model
+from .general import load_config
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
