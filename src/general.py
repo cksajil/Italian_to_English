@@ -5,6 +5,7 @@ from tqdm import tqdm
 import tensorflow as tf
 from os.path import join
 from .models import encoder_decoder
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 
 
@@ -90,9 +91,10 @@ def create_model():
     att_units = 256
     dec_units = 256
     embedding_size = 100
-    vocab_size_eng = 13416
-    vocab_size_ita = 27029
+    vocab_size_eng = 13431
+    vocab_size_ita = 27101
     BATCH_SIZE = 512
+    LEARNING_RATE = 0.01
 
     tf.keras.backend.clear_session()
 
@@ -112,7 +114,11 @@ def create_model():
         score_fun=score_function,
         attn_units=att_units,
     )
-    # model_2_dot.build(input_shape=(512, 100, 10))
+    adam_optimizer = Adam(
+        learning_rate=LEARNING_RATE, beta_1=0.9, beta_2=0.999, epsilon=1e-8
+    )
+    model_2_dot.compile(optimizer=adam_optimizer, loss=custom_loss)
+    model_2_dot.build(input_shape=(None, 512, 20))
     return model_2_dot
 
 
@@ -121,6 +127,6 @@ def load_pretrained_model():
     Function to load pretrained attention model and return it
     """
     model = create_model()
-    # filepath = join(config["model_loc"], config["model_weights_file_name"])
-    # model.load_weights(filepath)
+    filepath = join(config["model_loc"], config["model_weights_file_name"])
+    model.load_weights(filepath)
     return model

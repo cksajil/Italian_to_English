@@ -78,5 +78,4 @@ def predict(text_input):
             break
         curr_vec = np.array([pred_dec_indx])
         curr_vec = np.reshape(curr_vec, (1, 1))
-
-    return " ".join(prediction_string), attention_plot
+    return " ".join(prediction_string[:-1]), attention_plot
