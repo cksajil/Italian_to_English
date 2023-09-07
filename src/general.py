@@ -32,15 +32,30 @@ def create_models_folder():
         os.makedirs(config["model_loc"])
 
 
-def check_files():
-    essentials = {
-        "model_weights_file_name": 0,
-        "it_toknizr_model_name": 0,
-        "en_toknizr_model_name": 0,
-    }
-    for key, value in essentials.items():
-        essentials[key] = exists(join(config["model_loc"], config[key]))
+def retrieve_model_list():
+    doi = config["model_doi"]
+    response = requests.get(f"https://zenodo.org/api/records/{doi}")
+    data = response.json()
+    files = data["files"]
+    if len(files) == 0:
+        print("No model files found.")
+    else:
+        formats = (".h5", ".pickle")
+        model_files = [file for file in files if file["key"].endswith(formats)]
+        essentials = {}
+        for item in model_files:
+            file_url = item["links"]["self"]
+            model_filename = item["key"]
+            essentials[model_filename] = file_url
     return essentials
+
+
+def check_files():
+    model_path_dict = retrieve_model_list()
+    flag_dict = dict.fromkeys(model_path_dict.keys(), [])
+    for key, value in flag_dict.items():
+        flag_dict[key] = exists(join(config["model_loc"], key))
+    return flag_dict, model_path_dict
 
 
 def download_model():
@@ -50,28 +65,16 @@ def download_model():
 
     print("Downloading pretrained models if not exists")
 
-    essentials = check_files()
-    doi = config["model_doi"]
-    response = requests.get(f"https://zenodo.org/api/records/{doi}")
-    data = response.json()
-    files = data["files"]
-    if len(files) == 0:
-        print("No model files found.")
-    else:
-        for key, value in essentials.items():
-            if not essentials[key]:
-                model_file = join(config["model_loc"], config[key])
-
-                file_url = model_file["links"]["self"]
-                model_filename = model_file["key"]
-
-                response = requests.get(file_url, stream=True)
-                segments = response.iter_content()
-                with open(join(config["model_loc"], model_filename), "wb") as file:
-                    for chunk in tqdm(segments):
-                        file.write(chunk)
-
-                print(f"Model downloaded as {model_filename}")
+    flag_dict, path_dict = check_files()
+    for key, value in flag_dict.items():
+        if not flag_dict[key]:
+            print(f"Downloading... {key} file")
+            file_url = path_dict[key]
+            response = requests.get(file_url, stream=True)
+            segments = response.iter_content()
+            with open(join(config["model_loc"], key), "wb") as file:
+                for chunk in tqdm(segments):
+                    file.write(chunk)
 
 
 def custom_loss(real, pred):
