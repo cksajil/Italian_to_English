@@ -30,5 +30,9 @@ python -m pip install -r requirements.txt
 ### How to run
 
 ```console
+# Example input
 python main.py --it "Com'è il tempo?"
+
+# Expected output
+What's the weather like?
 ```
