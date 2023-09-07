@@ -47,7 +47,7 @@ def download_model():
     """
     Download pretrained models if not already downloaded
     """
-    flag = check_files
+    flag = check_files()
 
     if not flag:
         print("Downloading pretrained models if not exists")
