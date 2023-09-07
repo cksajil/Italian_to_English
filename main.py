@@ -7,6 +7,8 @@ def main():
     create_models_folder()
     download_model()
 
+    print("Translating input text from Italian to English")
+
     parser = argparse.ArgumentParser(
         description="Translated text in Italian to English"
     )
