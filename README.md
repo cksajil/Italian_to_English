@@ -1,6 +1,9 @@
 # Italian_to_English
 ## Text translation from Italian to English 
 
+<img src="https://i.ibb.co/XDjBP7c/seq-2-seq-demo.gif">
+
+
 <img src="https://i.ibb.co/pzBzP2M/attention-concat.png">
 
 **Python Version**
