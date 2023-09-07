@@ -91,8 +91,8 @@ def create_model():
     att_units = 256
     dec_units = 256
     embedding_size = 100
-    vocab_size_eng = 13431
-    vocab_size_ita = 27101
+    vocab_size_eng = 13390
+    vocab_size_ita = 27049
     BATCH_SIZE = 512
     LEARNING_RATE = 0.01
 
