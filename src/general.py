@@ -3,7 +3,7 @@ import yaml
 import requests
 from tqdm import tqdm
 import tensorflow as tf
-from os.path import join
+from os.path import join, exists
 from .models import encoder_decoder
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
@@ -17,7 +17,7 @@ def load_config(config_name):
     A function to load and return config file in YAML format
     """
     CONFIG_PATH = "./config/"
-    with open(os.path.join(CONFIG_PATH, config_name)) as file:
+    with open(join(CONFIG_PATH, config_name)) as file:
         config = yaml.safe_load(file)
 
     return config
@@ -33,46 +33,45 @@ def create_models_folder():
 
 
 def check_files():
-    essentials = [
-        "model_weights_file_name",
-        "it_toknizr_model_name",
-        "en_toknizr_model_name",
-    ]
-    for efile in essentials:
-        flag = os.path.exists(os.path.join(config["model_loc"], config[efile]))
-    return flag
+    essentials = {
+        "model_weights_file_name": 0,
+        "it_toknizr_model_name": 0,
+        "en_toknizr_model_name": 0,
+    }
+    for key, value in essentials.items():
+        essentials[key] = exists(join(config["model_loc"], config[key]))
+    return essentials
 
 
 def download_model():
     """
     Download pretrained models if not already downloaded
     """
-    flag = check_files()
 
-    if not flag:
-        print("Downloading pretrained models if not exists")
-        doi = config["model_doi"]
-        response = requests.get(f"https://zenodo.org/api/records/{doi}")
-        data = response.json()
-        files = data["files"]
-        formats = (".h5", ".pickle")
-        model_files = [file for file in files if file["key"].endswith(formats)]
-        print(model_files)
+    print("Downloading pretrained models if not exists")
 
-        if len(model_files) == 0:
-            print("No model files found.")
-        else:
-            model_file = model_files[0]
-            file_url = model_file["links"]["self"]
-            model_filename = model_file["key"]
+    essentials = check_files()
+    doi = config["model_doi"]
+    response = requests.get(f"https://zenodo.org/api/records/{doi}")
+    data = response.json()
+    files = data["files"]
+    if len(files) == 0:
+        print("No model files found.")
+    else:
+        for key, value in essentials.items():
+            if not essentials[key]:
+                model_file = join(config["model_loc"], config[key])
 
-            response = requests.get(file_url, stream=True)
-            segments = response.iter_content()
-            with open(os.path.join(config["model_loc"], model_filename), "wb") as file:
-                for chunk in tqdm(segments):
-                    file.write(chunk)
+                file_url = model_file["links"]["self"]
+                model_filename = model_file["key"]
 
-            print(f"Model downloaded as {model_filename}")
+                response = requests.get(file_url, stream=True)
+                segments = response.iter_content()
+                with open(join(config["model_loc"], model_filename), "wb") as file:
+                    for chunk in tqdm(segments):
+                        file.write(chunk)
+
+                print(f"Model downloaded as {model_filename}")
 
 
 def custom_loss(real, pred):
