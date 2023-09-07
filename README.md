@@ -1,4 +1,4 @@
-# Italian_to_English (work in progress)
+# Italian_to_English
 ## Text translation from Italian to English 
 
 <img src="https://i.ibb.co/pzBzP2M/attention-concat.png">
