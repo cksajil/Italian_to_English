@@ -1,6 +1,5 @@
 model_loc: pretrained_models
-model_weights_file_name: attention_dot_0.7705.h5
-model_doi: 8286718
+model_weights_file_name: attention_dot_0.4438.h5
 it_toknizr_model_name: ita_tokenizer.pickle
 en_toknizr_model_name: eng_tokenizer.pickle
 
